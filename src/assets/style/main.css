@@ -1,0 +1,16 @@
+ul>li{
+    list-style: none;
+}
+textarea,
+input:focus{
+    outline: none;
+}
+ul{
+    margin: 0;
+    padding: 0;
+}
+
+.del_l .el-checkbox__input.is-checked+.el-checkbox__label{
+    color: #d7d8da;
+    text-decoration: line-through;
+}
