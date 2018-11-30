@@ -3,11 +3,24 @@
     <control-pannel @review="review"></control-pannel>
     <div class="box_dragger" ref="box_dragger" id="box_dragger">
       <ul>
-        <li v-for="(item,i) in dragData">
-          <div class="ctl" :class="item.type?'ctl-text':''" ref="box">
+        <li v-for="(item,i) in dragData" @click="chose(i)" :class="nowIndex===i?'active':''">
+          <div class="ctl" :class="item.type?'ctl-text':''" ref="box" :style="{transform:'rotate('+site.rotate+'deg)'}">
             <img src="../assets/logo.png" alt="" v-if="!item.type">
             <textarea class="spec" type="text" v-model="initText" v-if="item.type"></textarea>
+            <div class="dragTemplate" style="position: absolute;left: 0;top: 0;right: 0;bottom: 0;background-color: #fff;opacity: 0;"></div>
             <div class="scale" ref="scale"></div>
+            <div class="coner coner_a"></div>
+            <div class="bot bot_a"></div>
+            <div class="coner coner_b"></div>
+            <div class="bot bot_b"></div>
+            <div class="coner coner_c"></div>
+            <div class="bot bot_c"></div>
+            <div class="coner coner_d"></div>
+            <div class="bot bot_d"></div>
+
+            <div class="coner coner_a_1" @click="preTrans" @mousemove="mousemove"></div>
+            <div class="bot bot_a_1"></div>
+
           </div>
         </li>
       </ul>
@@ -31,13 +44,41 @@
           { url: '', id: 1, type: 0 },
           { url: '', id: 1, type: 1 }
         ],
-        initText: "请输入文字"
+        initText: "请输入文字",
+        nowIndex:null,
+        site:{
+          x:null,
+          y:null,
+          rotate:0
+        }
       }
     },
     mounted() {
       this.initDrag()
     },
     methods: {
+      chose(i){
+        this.nowIndex = i;
+      },
+      preTrans(e){
+        this.site.x = e.x;
+        this.site.y = e.y;
+      },
+      mousemove(e){
+        var x = this.site.x,y = this.site.y;
+        if(e.x===x&&e.y===y){
+          return ;
+        }else{
+          if(x<e.x){
+            console.log("->")
+
+          }else{
+            console.log("<-")
+
+          }
+          this.site.rotate = Math.floor((Math.sin(Math.abs(e.y-y)/Math.abs(e.x-x))*100))
+        }
+      },
       initDrag(index) {
         // box是装图片的容器,fa是图片移动缩放的范围,scale是控制缩放的小图标
         var boxs = this.$refs.box;
@@ -198,6 +239,18 @@
     position: absolute;
   }
 
+  .ctl:hover .coner,.bot{
+    display: inline-block;
+  }
+
+  .active .ctl .coner,.active .ctl .bot{
+    display: inline-block;
+  }
+
+  .ctl .coner,.ctl .bot{
+    display: none;
+  }
+
   .ctl-text {
     background: transparent;
     width: auto;
@@ -217,5 +270,73 @@
     border: 0px;
     font-size: 16px;
     width: 100%;
+  }
+
+  .coner{
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    display: block;
+    border: 1px solid #add9ff;
+    z-index: 1;
+  }
+  .bot{
+    background: #add9ff;
+    position: absolute;
+  }
+  .coner.coner_a{
+    top:-5px;
+    left:-5px;
+  }
+  .bot.bot_a{
+    width: 100%;
+    height: 1px;
+    top:0;
+    left: 0;
+  }
+  .coner.coner_b{
+    top:-5px;
+    right:-5px;
+  }
+  .bot.bot_b{
+    width: 1px;
+    height: 100%;
+    right:0;
+    top:0;
+  }
+  .coner.coner_c{
+    bottom:-5px;
+    right:-5px;
+  }
+  .bot.bot_c{
+    width: 100%;
+    height: 1px;
+    bottom:0;
+    left:0;
+  }
+  .coner.coner_d{
+    bottom:-5px;
+    left:-5px;
+  }
+  .bot.bot_d{
+    width: 1px;
+    height: 100%;
+    left:0;
+    top:0;
+  }
+  .coner.coner_a_1{
+    left:50%;
+    top:-25px;
+    transform: translate(-50%, -50%);
+    cursor: url(../assets/img/mouserotate.png),default;
+  }
+  .bot.bot_a_1{
+    left:50%;
+    top: -12px;
+    transform: translate(-50%, -50%);
+    width: 1px;
+    height: 25px;
   }
 </style>
