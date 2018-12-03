@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <control-pannel @review="review"></control-pannel>
-    <div class="box_dragger" ref="box_dragger" id="box_dragger">
+    <control-pannel @review="review"></control-pannel>{{keepMove}}
+    <div class="box_dragger" ref="box_dragger" id="box_dragger" @mousemove="mousemove" @mouseup="releaseRotate">
       <ul>
-        <li v-for="(item,i) in dragData" @click="chose(i)" :class="nowIndex===i?'active':''">
+        <li v-for="(item,i) in dragData" @click="chose(i)" :class="nowIndex===i?'active':''" >
           <div class="ctl" :class="item.type?'ctl-text':''" ref="box" :style="{transform:'rotate('+site.rotate+'deg)'}">
             <img src="../assets/logo.png" alt="" v-if="!item.type">
             <textarea class="spec" type="text" v-model="initText" v-if="item.type"></textarea>
@@ -18,7 +18,7 @@
             <div class="coner coner_d"></div>
             <div class="bot bot_d"></div>
 
-            <div class="coner coner_a_1" @click="preTrans" @mousemove="mousemove"></div>
+            <div class="coner coner_a_1" @mousedown="preTrans"></div>
             <div class="bot bot_a_1"></div>
 
           </div>
@@ -50,7 +50,8 @@
           x:null,
           y:null,
           rotate:0
-        }
+        },
+        keepMove:true
       }
     },
     mounted() {
@@ -63,22 +64,48 @@
       preTrans(e){
         this.site.x = e.x;
         this.site.y = e.y;
+        this.keepMove = false;
+      },
+      releaseRotate(){
+        console.log("hahahhah")
+        this.keepMove = true;
       },
       mousemove(e){
+        if(this.keepMove){
+          return ;
+        }
         var x = this.site.x,y = this.site.y;
         if(e.x===x&&e.y===y){
           return ;
         }else{
-          if(x<e.x){
+          if(x>e.x){
             console.log("->")
 
           }else{
             console.log("<-")
 
           }
-          this.site.rotate = Math.floor((Math.sin(Math.abs(e.y-y)/Math.abs(e.x-x))*100))
+        console.log(Math.atan((e.y-y)/(e.x-x)) * 180 / Math.PI )
+          this.site.rotate = Math.atan((e.y-y)/(e.x-x)) * 180 / Math.PI 
         }
       },
+     getAngle(x, y) {
+        if (x === 0) {
+            return y > 0 ? 90 : 270;
+        }
+        var a = Math.atan(y/x);
+        var ret = a * 180 / Math.PI; //弧度转角度，方便调试
+        if (x < 0) {
+            ret = 180 + ret;
+        }
+        if (ret > 360) {
+            ret -= 360;
+        }
+        if (ret < 0) {
+            ret += 360;
+        }
+        return ret;
+    },
       initDrag(index) {
         // box是装图片的容器,fa是图片移动缩放的范围,scale是控制缩放的小图标
         var boxs = this.$refs.box;
@@ -111,9 +138,10 @@
         })
       },
       initBox(fa, box) {
+        let _this = this;
         // 图片移动效果
         box.onmousedown = function (ev) {
-          if (ev.target.localName === 'textarea') {
+          if (ev.target.localName === 'textarea' || !_this.keepMove)  {
             return;
           }
           var oEvent = ev;
@@ -122,6 +150,9 @@
           var disX = oEvent.clientX - box.offsetLeft;
           var disY = oEvent.clientY - box.offsetTop;
           fa.onmousemove = function (ev) {
+          //   if (!this.keepMove)  {
+          //   return;
+          // }
             oEvent = ev;
             oEvent.preventDefault();
             var x = oEvent.clientX - disX;
@@ -148,8 +179,12 @@
         }
       },
       initScale(fa, scale, box) {
+        let _this = this;
         // 图片缩放效果
         scale.onmousedown = function (e) {
+          if (!_this.keepMove)  {
+            return;
+          }
           // 阻止冒泡,避免缩放时触发移动事件
           e.stopPropagation();
           e.preventDefault();
