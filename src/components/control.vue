@@ -6,7 +6,7 @@
         <ul ref="pannel">
             <li v-for="(item,i) in Stacks" draggable="true" ref="ctl" v-if="!item.hide">
                 <div class="ctl">
-                    {{item.data.title}}
+                    {{item.data.text}}
                 </div>
             </li>
         </ul>
@@ -44,7 +44,7 @@
                 switch (data.type) {
                     case 1: this.addText(data); break;
                 }
-                this.$emit('review', data);
+                // this.$emit('review', data);
             },
             addText(data) {
                 this.addStack({

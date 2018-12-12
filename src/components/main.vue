@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-    <control-pannel @review="review"></control-pannel>{{keepMove}}
+    <control-pannel @review="review"></control-pannel>{{Stacks.length}}
     <div class="box_dragger" ref="box_dragger" id="box_dragger" @mousemove="mousemove" @mouseup="releaseRotate">
       <ul>
-        <li v-for="(item,i) in dragData" @click="chose(i)" :class="nowIndex===i?'active':''" >
-          <div class="ctl" :class="item.type?'ctl-text':''" ref="box" :style="{transform:'rotate('+site.rotate+'deg)'}">
-            <img src="../assets/logo.png" alt="" v-if="!item.type">
-            <textarea class="spec" type="text" v-model="initText" v-if="item.type"></textarea>
+        <li v-for="(item,i) in Stacks" @click="chose(i)" :class="nowIndex===i?'active':''" v-if="!item.hide">
+          <div class="ctl" :class="item.data.type?'ctl-text':''" ref="box" :style="{transform:'rotate('+site.rotate+'deg)'}">
+            <img src="../assets/logo.png" alt="" v-if="!item.data.type">
+            <textarea class="spec" type="text" v-model="item.data.text" v-if="item.data.type"></textarea>
             <div class="dragTemplate" style="position: absolute;left: 0;top: 0;right: 0;bottom: 0;background-color: #fff;opacity: 0;"></div>
             <div class="scale" ref="scale"></div>
             <div class="coner coner_a"></div>
@@ -31,18 +31,18 @@
 
 <script>
   import controlPannel from './control'
+    import { mapGetters, mapMutations } from 'vuex'
   export default {
     name: 'Index',
     components: {
       controlPannel
     },
+    computed:{
+      // ...mapGetters(["Stacks"])
+    },
     data() {
       return {
         dragData: [  //type:0 图片 type:1 文字
-          { url: '', id: 1, type: 0 },
-          { url: '', id: 1, type: 0 },
-          { url: '', id: 1, type: 0 },
-          { url: '', id: 1, type: 1 }
         ],
         initText: "请输入文字",
         nowIndex:null,
@@ -51,11 +51,19 @@
           y:null,
           rotate:0
         },
+        Stacks:[],
         keepMove:true
       }
     },
+    watch:{
+      Stacks(val){
+        this.$nextTick(()=>{
+        this.initDrag()
+        })
+      }
+    },
     mounted() {
-      this.initDrag()
+        this.Stacks = this.$store.state.Stacks
     },
     methods: {
       chose(i){
@@ -113,7 +121,7 @@
         var scales = this.$refs.scale;
         
         if(index===undefined)
-        this.dragData.map((v, i, arr) => {
+        this.Stacks.map((v, i, arr) => {
           this.initBox(fa, boxs[i]);
           this.initScale(fa, scales[i], boxs[i]);
         })
@@ -127,8 +135,8 @@
         this.add(data);
       },
       add(data) {
-        let nextIndex = this.dragData.length;
-        this.dragData.push({
+        let nextIndex = this.Stacks.length;
+        this.Stacks.push({
           url: '',
           type: data.type,
           id: nextIndex
@@ -248,6 +256,8 @@
 
   .box_dragger textarea {
     resize: none;
+    position: relative;
+    z-index: 1;
     width: 100% !important;
     height: 100% !important;
   }
@@ -290,14 +300,13 @@
     background: transparent;
     width: auto;
     height: auto;
-    padding: 10px;
     border: 1px solid transparent;
   }
 
   .ctl-text:hover {
     border: 1px solid #e2dfdf;
     border-radius: 5px;
-    background: #fff;
+    background: transparent;
   }
 
   .ctl-text .spec {
