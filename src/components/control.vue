@@ -4,14 +4,14 @@
         <com-pannel @addItem="addItem"></com-pannel>
         <h3>工作区</h3>
         <ul ref="pannel">
-            <li v-for="(item,i) in dragData" draggable="true" ref="ctl">
+            <li v-for="(item,i) in Stacks" draggable="true" ref="ctl" v-if="!item.hide">
                 <div class="ctl">
-                    {{item.title}}
+                    {{item.data.title}}
                 </div>
             </li>
         </ul>
 
-        <history-pannel></history-pannel>
+        <history-pannel ref="Stack" :data="Stacks"></history-pannel>
 
     </div>
 </template>
@@ -27,21 +27,16 @@
         },
         data() {
             return {
-                dragData: [
-                    { title: "1111111", id: 1, delete: 0 },
-                    { title: "2222222", id: 2, delete: 0 },
-                    { title: "3333333", id: 3, delete: 0 },
-                    { title: "受到粉丝的饭", id: 3, delete: 0 },
-                    { title: "3333对对方的333", id: 3, delete: 0 }
-                ],
-                checkList: []
+                dragData: [],
+                checkList: [],
+                Stacks:[]
             }
         },
         mounted() {
             this.initDarg();
-            // var aa = document.getElementById('test')
-            // var bb = document.getElementById('test1')
-            // bb.insertBefore("<li>sdfsd</li>",aa)
+            setTimeout(()=>{
+                    this.Stacks = this.$store.state.Stacks
+                })
         },
         methods: {
             ...mapMutations(["addStack"]),
@@ -52,17 +47,20 @@
                 this.$emit('review', data);
             },
             addText(data) {
-                this.dragData.push({
+                this.addStack({
+                    type:data.type,
+                    text:data.text,
                     title: data.text,
                     delete: 0,
                     id: this.dragData.length
-                })
-                this.addStack(data);
-                console.log(this.$store.state)
+                });
             },
             initDarg() {
                 var source = this.$refs.ctl,
                     dragElement = null;
+                    if(!source){
+                        return ;
+                    }
 
                 for (var i = 0; i < source.length; i++) {
                     source[i].addEventListener('dragstart', function (ev) {

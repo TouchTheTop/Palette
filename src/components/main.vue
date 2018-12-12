@@ -86,7 +86,7 @@
 
           }
         console.log(Math.atan((e.y-y)/(e.x-x)) * 180 / Math.PI )
-          this.site.rotate = Math.atan((e.y-y)/(e.x-x)) * 180 / Math.PI 
+          this.site.rotate = Math.asin(Math.abs(e.y-y)/Math.abs(e.x-x)) * 180 / Math.PI 
         }
       },
      getAngle(x, y) {
