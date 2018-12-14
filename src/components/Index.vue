@@ -4,13 +4,7 @@
           <main-pannel></main-pannel>    
           <img v-show="poster" :src="poster" alt="">
 
-          <el-dialog title="上传图片" :visible.sync="dialogTableVisible">
-            <input type="file" @change="getUpIMG" />
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-            </div>
-          </el-dialog>
+
           
         </div>
       </template>
@@ -26,8 +20,7 @@
         },
         data () {
           return {
-            poster: '',
-            dialogTableVisible:true
+            poster: ''
           }
         },
         mounted(){
@@ -39,9 +32,6 @@
         methods:{
           getIMG(img){
             this.poster = img;
-          },
-          getUpIMG(files){
-            console.log(files)
           }
             
         }

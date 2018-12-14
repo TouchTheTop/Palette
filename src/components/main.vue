@@ -9,17 +9,17 @@
             <textarea class="spec" type="text" v-model="item.data.text" v-if="item.data.type"></textarea>
             <div class="dragTemplate" style="position: absolute;left: 0;top: 0;right: 0;bottom: 0;background-color: #fff;opacity: 0;"></div>
             <div class="scale" ref="scale"></div>
-            <div class="coner coner_a"></div>
-            <div class="bot bot_a"></div>
-            <div class="coner coner_b"></div>
-            <div class="bot bot_b"></div>
-            <div class="coner coner_c"></div>
-            <div class="bot bot_c"></div>
-            <div class="coner coner_d"></div>
-            <div class="bot bot_d"></div>
+            <div class="coner coner_a h_display"></div>
+            <div class="bot bot_a h_display" ></div>
+            <div class="coner coner_b h_display"></div>
+            <div class="bot bot_b h_display"></div>
+            <div class="coner coner_c h_display"></div>
+            <div class="bot bot_c h_display"></div>
+            <div class="coner coner_d h_display"></div>
+            <div class="bot bot_d h_display"></div>
 
-            <div class="coner coner_a_1" @mousedown="preTrans"></div>
-            <div class="bot bot_a_1"></div>
+            <div class="coner coner_a_1 " @mousedown="preTrans"></div>
+            <div class="bot bot_a_1 "></div>
 
           </div>
         </li>
@@ -268,8 +268,8 @@
   }
 
   .scale {
-    width: 10px;
-    height: 10px;
+    width: 20px;
+    height: 15px;
     overflow: hidden;
     cursor: se-resize;
     position: absolute;
@@ -284,7 +284,7 @@
     position: absolute;
   }
 
-  .ctl:hover .coner,.bot{
+  .ctl:hover .h_display{
     display: inline-block;
   }
 
@@ -375,12 +375,14 @@
     top:-25px;
     transform: translate(-50%, -50%);
     cursor: url(../assets/img/mouserotate.png),default;
+    background: #185b8a;
   }
   .bot.bot_a_1{
     left:50%;
-    top: -12px;
+    top: -13px;
     transform: translate(-50%, -50%);
     width: 1px;
     height: 25px;
+    background: #185b8a;
   }
 </style>

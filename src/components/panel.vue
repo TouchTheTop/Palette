@@ -8,13 +8,23 @@
                 <span>{{item.name}}</span>
             </li>
         </ul>
+        <input type="file" @change="getUpIMG" />
+
+        <el-dialog title="上传图片" :visible.sync="dialogTableVisible">
+            <input type="file" @change="getUpIMG" />
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+            </div>
+        </el-dialog>
+
     </div>
 </template>
 
 <script>
     import Icon from 'vue-svg-icon/Icon.vue'
     import Modules from '../json/module'
-    import {  mapMutations } from 'vuex'
+    import { mapMutations } from 'vuex'
     export default {
         name: 'Index',
         components: {
@@ -25,7 +35,8 @@
                 comData: [
                     { type: 0, name: '图片', svg: 'img' },
                     { type: 1, name: '文字', svg: 'text' }
-                ]
+                ],
+                dialogTableVisible: false
             }
         },
         created() {
@@ -34,9 +45,10 @@
         mounted() {
         },
         methods: {
+            ...mapMutations(["addStack"]),
             getItem(obj) {
                 if (obj.type === 0) {
-
+                    this.dialogTableVisible = true;
                 }
                 else if (obj.type === 1) {
                     this.$emit("addItem", {
@@ -44,7 +56,26 @@
                         text: "请输入文字"
                     })
                 }
-            }
+            },
+            getUpIMG(e) {
+                console.log(e)
+                let URL = "http://localhost:3030"
+
+                this.$axios.request({
+                    url: URL + '/Upload/sliceUploadFile', //仅为示例，并非真实的接口地址
+                    method: "POST",
+                    data: {
+                        Key: e.target.files[0].name,
+                        FilePath: e.target.files[0]
+                    },
+                    success: function (res) {
+                        let result = res.data;
+
+                    }
+                });
+
+                // e.target.value = "";
+            },
         }
     }
 </script>
