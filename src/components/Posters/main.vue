@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <control-pannel @review="review"></control-pannel>{{Stacks.length}}
+    <control-pannel @review="review"></control-pannel>
     <div class="box_dragger" ref="box_dragger" id="box_dragger" @mousemove="mousemove" @mouseup="releaseRotate">
       <ul>
-        <li v-for="(item,i) in Stacks" @click="chose(i)" :class="nowIndex===i?'active':''" v-if="!item.hide">
+        <li v-for="(item,i) in Stacks" @click="chose(i)" :class="nowIndex===i?'active':''" v-show="!item.hide" :title="item.data.title">
           <div class="ctl" :class="item.data.type?'ctl-text':''" ref="box" :style="{transform:'rotate('+site.rotate+'deg)'}">
-            <img src="../assets/logo.png" alt="" v-if="!item.data.type">
+            <img :src="item.data.text" alt="" v-if="!item.data.type">
             <textarea class="spec" type="text" v-model="item.data.text" v-if="item.data.type"></textarea>
             <div class="dragTemplate" style="position: absolute;left: 0;top: 0;right: 0;bottom: 0;background-color: #fff;opacity: 0;"></div>
             <div class="scale" ref="scale"></div>
@@ -57,6 +57,7 @@
     },
     watch:{
       Stacks(val){
+        console.log("重绘")
         this.$nextTick(()=>{
         this.initDrag()
         })
@@ -374,7 +375,7 @@
     left:50%;
     top:-25px;
     transform: translate(-50%, -50%);
-    cursor: url(../assets/img/mouserotate.png),default;
+    cursor: url(../../assets/img/mouserotate.png),default;
     background: #185b8a;
   }
   .bot.bot_a_1{

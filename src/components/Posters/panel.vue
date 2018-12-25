@@ -8,14 +8,8 @@
                 <span>{{item.name}}</span>
             </li>
         </ul>
-        <input type="file" @change="getUpIMG" />
-
         <el-dialog title="上传图片" :visible.sync="dialogTableVisible">
-            <input type="file" @change="getUpIMG" />
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-            </div>
+            <input type="file" name="File" @change="getUpIMG" />
         </el-dialog>
 
     </div>
@@ -23,8 +17,9 @@
 
 <script>
     import Icon from 'vue-svg-icon/Icon.vue'
-    import Modules from '../json/module'
+    import Modules from '@/json/module'
     import { mapMutations } from 'vuex'
+    import qs from 'qs'
     export default {
         name: 'Index',
         components: {
@@ -45,7 +40,6 @@
         mounted() {
         },
         methods: {
-            ...mapMutations(["addStack"]),
             getItem(obj) {
                 if (obj.type === 0) {
                     this.dialogTableVisible = true;
@@ -58,23 +52,26 @@
                 }
             },
             getUpIMG(e) {
-                console.log(e)
+                if (!e.target.files[0]) {
+                    return;
+                }
                 let URL = "http://localhost:3030"
-
-                this.$axios.request({
-                    url: URL + '/Upload/sliceUploadFile', //仅为示例，并非真实的接口地址
-                    method: "POST",
-                    data: {
-                        Key: e.target.files[0].name,
-                        FilePath: e.target.files[0]
-                    },
-                    success: function (res) {
-                        let result = res.data;
-
+                let that = this
+                let formData = new FormData();
+                formData.append('File', e.target.files[0])
+                let instance = this.$axios.create();
+                instance.post(URL + '/Upload/sliceUploadFile', formData).then(res => {
+                    if (res) {
+                        this.dialogTableVisible = false;
+                        this.$emit("addItem", {
+                            type: 0,
+                            text: res.data.url
+                        })
                     }
+                }).catch(err => {
+                    console.log(err)
                 });
 
-                // e.target.value = "";
             },
         }
     }

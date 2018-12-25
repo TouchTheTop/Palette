@@ -6,7 +6,7 @@
         <ul ref="pannel">
             <li v-for="(item,i) in Stacks" draggable="true" ref="ctl" v-if="!item.hide">
                 <div class="ctl">
-                    {{item.data.text}}
+                    {{item.data.title}}
                 </div>
             </li>
         </ul>
@@ -29,7 +29,14 @@
             return {
                 dragData: [],
                 checkList: [],
-                Stacks:[]
+                Stacks:[],
+                title:'新建'
+            }
+        },
+        watch:{
+            '$store.state.Stacks'(){
+                console.log('重新排序')
+            this.initDarg();
             }
         },
         mounted() {
@@ -42,6 +49,7 @@
             ...mapMutations(["addStack"]),
             addItem(data) {
                 switch (data.type) {
+                    case 0: this.addText(data); break;
                     case 1: this.addText(data); break;
                 }
                 // this.$emit('review', data);
@@ -50,9 +58,9 @@
                 this.addStack({
                     type:data.type,
                     text:data.text,
-                    title: data.text,
+                    title: this.title+(this.Stacks.length>0?`(${this.Stacks.length})`:''),
                     delete: 0,
-                    id: this.dragData.length
+                    id: this.Stacks.length
                 });
             },
             initDarg() {

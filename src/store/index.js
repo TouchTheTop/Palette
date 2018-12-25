@@ -1,6 +1,6 @@
 import Vue from 'Vue'
 import Vuex from 'vuex'
-import Modules from '../json/module'
+import Modules from '@/json/module'
 import md5 from 'js-md5'
 
 Vue.use(Vuex)
