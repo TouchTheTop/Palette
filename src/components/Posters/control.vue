@@ -101,6 +101,7 @@
     .box_control {
         width: 280px;
         height: 100%;
+        margin-right: 15px;
     }
 
     .box_control ul {

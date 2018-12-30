@@ -1,30 +1,41 @@
 <template>
   <div class="container">
     <control-pannel @review="review"></control-pannel>
-    <div class="box_dragger" ref="box_dragger" id="box_dragger" @mousemove="mousemove" @mouseup="releaseRotate">
-      <ul>
-        <li v-for="(item,i) in Stacks" @click="chose(i)" :class="nowIndex===i?'active':''" v-show="!item.hide" :title="item.data.title">
-          <div class="ctl" :class="item.data.type?'ctl-text':''" ref="box" :style="{transform:'rotate('+site.rotate+'deg)'}">
-            <img :src="item.data.text" alt="" v-if="!item.data.type">
-            <textarea class="spec" type="text" v-model="item.data.text" v-if="item.data.type"></textarea>
-            <div class="dragTemplate" style="position: absolute;left: 0;top: 0;right: 0;bottom: 0;background-color: #fff;opacity: 0;"></div>
-            <div class="scale" ref="scale"></div>
-            <div class="coner coner_a h_display"></div>
-            <div class="bot bot_a h_display" ></div>
-            <div class="coner coner_b h_display"></div>
-            <div class="bot bot_b h_display"></div>
-            <div class="coner coner_c h_display"></div>
-            <div class="bot bot_c h_display"></div>
-            <div class="coner coner_d h_display"></div>
-            <div class="bot bot_d h_display"></div>
 
-            <div class="coner coner_a_1 " @mousedown="preTrans"></div>
-            <div class="bot bot_a_1 "></div>
-
+    <el-tabs v-model="editableTabsValue" type="card" editable @edit="handleTabsEdit">
+        <el-tab-pane
+          :key="item.name"
+          v-for="(item, index) in editableTabs"
+          :label="item.title"
+          :name="item.name"
+        >
+        <div class="box_dragger" ref="box_dragger" id="box_dragger" @mousemove="mousemove" @mouseup="releaseRotate">
+            <ul>
+              <li v-for="(item,i) in Stacks" @click="chose(i)" :class="nowIndex===i?'active':''" v-show="!item.hide" :title="item.data.title">
+                <div class="ctl" :class="item.data.type?'ctl-text':''" ref="box" :style="{transform:'rotate('+site.rotate+'deg)'}">
+                  <img :src="item.data.text" alt="" v-if="!item.data.type">
+                  <textarea class="spec" type="text" v-model="item.data.text" v-if="item.data.type"></textarea>
+                  <div class="dragTemplate" style="position: absolute;left: 0;top: 0;right: 0;bottom: 0;background-color: #fff;opacity: 0;"></div>
+                  <div class="scale" ref="scale"></div>
+                  <div class="coner coner_a h_display"></div>
+                  <div class="bot bot_a h_display" ></div>
+                  <div class="coner coner_b h_display"></div>
+                  <div class="bot bot_b h_display"></div>
+                  <div class="coner coner_c h_display"></div>
+                  <div class="bot bot_c h_display"></div>
+                  <div class="coner coner_d h_display"></div>
+                  <div class="bot bot_d h_display"></div>
+      
+                  <div class="coner coner_a_1 " @mousedown="preTrans"></div>
+                  <div class="bot bot_a_1 "></div>
+      
+                </div>
+              </li>
+            </ul>
           </div>
-        </li>
-      </ul>
-    </div>
+        </el-tab-pane>
+      </el-tabs>
+
 
   </div>
 </template>
@@ -52,7 +63,18 @@
           rotate:0
         },
         Stacks:[],
-        keepMove:true
+        keepMove:true,
+        editableTabsValue: '2',
+        editableTabs: [{
+          title: 'Tab 1',
+          name: '1',
+          content: 'Tab 1 content'
+        }, {
+          title: 'Tab 2',
+          name: '2',
+          content: 'Tab 2 content'
+        }],
+        tabIndex: 2
       }
     },
     watch:{
@@ -242,7 +264,6 @@
     height: 500px;
     background-color: rgb(249, 249, 249);
     position: relative;
-    margin-left: 15px;
   }
 
   .box_dragger img {

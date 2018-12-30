@@ -17,7 +17,7 @@ const mutations = {
             const opts = {
                 id:md5(t),
                 type:0,
-                desc:"新增["+Modules[data.type].name+"]",
+                desc:"新增["+data.title+"]",
                 time:t,
                 delete:false,
                 data:data,

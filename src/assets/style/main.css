@@ -14,3 +14,13 @@ ul{
     color: #d7d8da;
     text-decoration: line-through;
 }
+
+.el-tabs--card>.el-tabs__header{
+    margin: 0;
+}
+
+.el-tabs__content{
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
