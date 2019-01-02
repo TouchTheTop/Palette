@@ -24,6 +24,10 @@
                     default:function(){
                         return []
                     }
+                },
+                nowTab:{
+                    type:String,
+                    default:0
                 }
             },
             data() {
@@ -32,7 +36,11 @@
                     Stacks:this.$store.getters.Stacks
                 }
             },
-
+            watch: {
+                'nowTab'(){
+                    this.Stacks = this.$store.getters.Stacks
+                }
+            },
             mounted() {
             },
             methods: {

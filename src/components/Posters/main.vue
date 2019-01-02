@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <control-pannel @review="review"></control-pannel>
+    <control-pannel @review="review" :nowTab="nowTab"></control-pannel>
 
     <el-tabs v-model="nowTab" type="card" editable @edit="handleTabsEdit">
         <el-tab-pane

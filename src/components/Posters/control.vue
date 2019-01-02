@@ -11,7 +11,7 @@
             </li>
         </ul>
 
-        <history-pannel ref="Stack" :data="Stacks"></history-pannel>
+        <history-pannel ref="Stack" :data="Stacks" :nowTab="nowTab"></history-pannel>
 
     </div>
 </template>
@@ -25,6 +25,12 @@
             comPannel,
             historyPannel
         },
+        props: {
+                nowTab:{
+                    type:String,
+                    default:0
+                }
+            },
         data() {
             return {
                 dragData: [],
@@ -37,7 +43,10 @@
             '$store.state.Stacks'(){
                 console.log('重新排序')
             this.initDarg();
-            }
+            },
+            'nowTab'(){
+                    this.Stacks = this.$store.getters.Stacks
+                }
         },
         mounted() {
             this.initDarg();
