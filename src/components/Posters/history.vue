@@ -18,23 +18,22 @@
         import { mapGetters, mapMutations } from 'vuex'
         
         export default {
-            
             props: {
                 data:{
                     type:Array,
-                    default:[]
+                    default:function(){
+                        return []
+                    }
                 }
             },
             data() {
                 return {
                     checkList:[],
-                    Stacks:[]
+                    Stacks:this.$store.getters.Stacks
                 }
             },
+
             mounted() {
-                setTimeout(()=>{
-                    this.Stacks = this.$store.state.Stacks
-                })
             },
             methods: {
                 ...mapMutations(["clearStack","hideStack"]),

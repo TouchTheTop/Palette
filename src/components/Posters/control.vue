@@ -29,7 +29,7 @@
             return {
                 dragData: [],
                 checkList: [],
-                Stacks:[],
+                Stacks:this.$store.getters.Stacks,
                 title:'新建'
             }
         },
@@ -41,9 +41,6 @@
         },
         mounted() {
             this.initDarg();
-            setTimeout(()=>{
-                    this.Stacks = this.$store.state.Stacks
-                })
         },
         methods: {
             ...mapMutations(["addStack"]),
@@ -62,6 +59,8 @@
                     delete: 0,
                     id: this.Stacks.length
                 });
+                console.log(this.Stacks)
+                console.log(this.$store.state)
             },
             initDarg() {
                 var source = this.$refs.ctl,

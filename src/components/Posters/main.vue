@@ -2,14 +2,15 @@
   <div class="container">
     <control-pannel @review="review"></control-pannel>
 
-    <el-tabs v-model="editableTabsValue" type="card" editable @edit="handleTabsEdit">
+    <el-tabs v-model="nowTab" type="card" editable @edit="handleTabsEdit">
         <el-tab-pane
-          :key="item.name"
-          v-for="(item, index) in editableTabs"
+          :key="item.id"
+          v-for="(item, index) in Tabs"
           :label="item.title"
-          :name="item.name"
+          :name="index+''"
+          class="tap-pane"
         >
-        <div class="box_dragger" ref="box_dragger" id="box_dragger" @mousemove="mousemove" @mouseup="releaseRotate">
+        <div class="box_dragger" ref="box_dragger" :style="{width:item.w+'px',height:item.h+'px',background:item.bgColor}" id="box_dragger" @mousemove="mousemove" @mouseup="releaseRotate">
             <ul>
               <li v-for="(item,i) in Stacks" @click="chose(i)" :class="nowIndex===i?'active':''" v-show="!item.hide" :title="item.data.title">
                 <div class="ctl" :class="item.data.type?'ctl-text':''" ref="box" :style="{transform:'rotate('+site.rotate+'deg)'}">
@@ -36,20 +37,25 @@
         </el-tab-pane>
       </el-tabs>
 
-
+  <size-dialog ref="sizeDialog" @setInfo="setInfo"></size-dialog>
   </div>
 </template>
 
 <script>
   import controlPannel from './control'
+  import sizeDialog from '@/components/Posters/unit/size'
     import { mapGetters, mapMutations } from 'vuex'
   export default {
     name: 'Index',
     components: {
-      controlPannel
+      controlPannel,
+      sizeDialog
     },
     computed:{
-      // ...mapGetters(["Stacks"])
+      ...mapGetters(["Tabs"]),
+      // Stacks(){
+      //   return this.$store.getters.Stacks
+      // }
     },
     data() {
       return {
@@ -62,33 +68,60 @@
           y:null,
           rotate:0
         },
-        Stacks:[],
+        Stacks:this.$store.getters.Stacks,
         keepMove:true,
-        editableTabsValue: '2',
-        editableTabs: [{
-          title: 'Tab 1',
-          name: '1',
-          content: 'Tab 1 content'
-        }, {
-          title: 'Tab 2',
-          name: '2',
-          content: 'Tab 2 content'
-        }],
+        nowTab: '0',
         tabIndex: 2
       }
     },
     watch:{
-      Stacks(val){
+      '$store.getters.Stacks'(val){
         console.log("重绘")
         this.$nextTick(()=>{
         this.initDrag()
         })
+      },
+      nowTab(val){
+        this.setNowTab(val)
+        this.Stacks = this.$store.getters.Stacks
       }
     },
     mounted() {
-        this.Stacks = this.$store.state.Stacks
+        console.log(this.Stacks)
     },
     methods: {
+      ...mapMutations(["addTabs","setNowTab"]),
+      setInfo(obj) {
+                this.addTabs(obj);
+                console.log(this.$store.state.Tabs)
+                console.log("就哈哈哈哈")
+                this.$nextTick(() => {
+                    this.nowTab = (this.Tabs.length - 1).toString();
+                    this.dialogVisible = false;
+                })
+            },
+      handleTabsEdit(targetName, action) {
+        if (action === 'add') {
+          this.$refs.sizeDialog.newPannel()
+        }
+        if (action === 'remove') {
+          let tabs = this.editableTabs;
+          let activeName = this.editableTabsValue;
+          if (activeName === targetName) {
+            tabs.forEach((tab, index) => {
+              if (tab.name === targetName) {
+                let nextTab = tabs[index + 1] || tabs[index - 1];
+                if (nextTab) {
+                  activeName = nextTab.name;
+                }
+              }
+            });
+          }
+          
+          this.editableTabsValue = activeName;
+          this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+        }
+      },
       chose(i){
         this.nowIndex = i;
       },
@@ -260,10 +293,15 @@
   }
 
   .box_dragger {
-    width: 600px;
-    height: 500px;
     background-color: rgb(249, 249, 249);
-    position: relative;
+    background-image: url(../../assets/img/bg_1.png);
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    /* line-height: 100px; */
+    margin: auto;
   }
 
   .box_dragger img {
@@ -406,5 +444,11 @@
     width: 1px;
     height: 25px;
     background: #185b8a;
+  }
+
+  .tap-pane{
+    background: #fff;
+    width: 600px;
+    height: 600px;
   }
 </style>

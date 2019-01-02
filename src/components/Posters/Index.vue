@@ -1,11 +1,10 @@
 <template>
   <div class="container">
-    <div class="control-bar">
-      <post-pannel @getIMG="getIMG"></post-pannel>
-      <size-pannel></size-pannel>
-    </div>
 
       <main-pannel></main-pannel>
+      <div class="control-bar">
+        <post-pannel @getIMG="getIMG"></post-pannel>
+      </div>
     <img v-show="poster" :src="poster" alt="">
 
 
@@ -16,13 +15,11 @@
 <script>
   import mainPannel from './main'
   import postPannel from './unit/post'
-  import sizePannel from './unit/size'
   export default {
     name: 'Index',
     components: {
       mainPannel,
-      postPannel,
-      sizePannel
+      postPannel
     },
     data() {
       return {
