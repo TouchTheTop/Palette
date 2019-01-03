@@ -91,6 +91,10 @@ const mutations = {
     delStack:(state,data)=>{
 
     },
+    delTab:(state)=>{
+        state.Tabs.splice(state.nowTab,1);
+        state.nowTab = state.nowTab - 1;
+    },
     clearStack:(state,data)=>{
         state.Tabs[state.nowTab].Stacks = [];
     },

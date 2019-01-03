@@ -1,5 +1,14 @@
 <template>
-        <div>
+        <div class="box_control">
+                <h3>工作区</h3>
+                <ul ref="pannel">
+                    <li v-for="(item,i) in Stacks" draggable="true" ref="ctl" v-if="!item.hide">
+                        <div class="ctl">
+                            {{item.data.title}}
+                        </div>
+                    </li>
+                </ul>
+
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
                     <span>历史操作</span>
@@ -46,6 +55,7 @@
             methods: {
                 ...mapMutations(["clearStack","hideStack"]),
                 clearALL() {
+                    this.Stacks = [];
                     this.clearStack();
                     console.log(this.$store.state)
                 },
@@ -60,4 +70,24 @@
     </script>
     
     <style scoped>
+            .box_control {
+        width: 280px;
+        height: 100%;
+        /* margin-left: 15px; */
+    }
+
+    .box_control ul {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .box_control li {
+        background: #fff;
+        border: 1px solid #ddd;
+        padding: 8px 6px;
+        font-size: 14px;
+        margin-bottom: 4px;
+        border-radius: 3px;
+        color: #666;
+    }
     </style>
