@@ -2,16 +2,8 @@
     <div class="box_control" ref="box_control">
         <h3>基础元素</h3>
         <com-pannel @addItem="addItem"></com-pannel>
-        <!-- <h3>工作区</h3>
-        <ul ref="pannel">
-            <li v-for="(item,i) in Stacks" draggable="true" ref="ctl" v-if="!item.hide">
-                <div class="ctl">
-                    {{item.data.title}}
-                </div>
-            </li>
-        </ul> -->
-
-        <!-- <history-pannel ref="Stack" :data="Stacks" :nowTab="nowTab"></history-pannel> -->
+        <h3>素材库</h3>
+        <lib-pannel></lib-pannel>
 
     </div>
 </template>
@@ -19,11 +11,13 @@
 <script>
     import { mapGetters, mapMutations } from 'vuex'
     import comPannel from './panel'
+    import libPannel from './unit/lib'
     import historyPannel from './history'
     export default {
         components: {
             comPannel,
-            historyPannel
+            historyPannel,
+            libPannel
         },
         props: {
                 nowTab:{
@@ -106,5 +100,7 @@
 </script>
 
 <style scoped>
-
+.box_control{
+    min-width: 320px;
+}
 </style>

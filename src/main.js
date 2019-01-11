@@ -9,9 +9,22 @@ import store from './store/index'
 import Vuex from 'vuex'
 import axios from 'axios'
 import http from 'http'
+import ASK from './store/ask'
+import API from '../api'
 
 Vue.prototype.$axios = axios
 Vue.prototype.$http = http
+Vue.prototype.$ASK = ASK
+Vue.prototype.$API = API
+
+// 拼接POST DATA
+Vue.prototype.$concatPost = function (obj) {
+  var route = '?'
+  for (var i in obj) {
+    route += (route != '?' ? '&' : '') + i + '=' + obj[i]
+  }
+  return route
+}
 
 Vue.use(Vuex)
 Vue.use(ElementUI)

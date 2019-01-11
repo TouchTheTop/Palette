@@ -2,6 +2,7 @@ import Vue from 'Vue'
 import Vuex from 'vuex'
 import Modules from '@/json/module'
 import md5 from 'js-md5'
+import api_config from './config'
 
 Vue.use(Vuex)
 const state = {
@@ -116,5 +117,6 @@ export default new Vuex.Store({
         return state.Tabs[state.nowTab].Stacks},
       Tabs:state => state.Tabs,
       nowTab:state => state.nowTab,
+      apiConfig:state => api_config.dev
     }
   })
