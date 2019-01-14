@@ -2,8 +2,12 @@
     <div class="box_control" ref="box_control">
         <h3>基础元素</h3>
         <com-pannel @addItem="addItem"></com-pannel>
+        <h3>我的收藏</h3>
+        <collect-pannel @addItem="addItem"></collect-pannel>
         <h3>素材库</h3>
-        <lib-pannel></lib-pannel>
+        <el-button @click="showIt">打开</el-button>
+        <lib-pannel ref="lib"></lib-pannel>
+
 
     </div>
 </template>
@@ -12,11 +16,13 @@
     import { mapGetters, mapMutations } from 'vuex'
     import comPannel from './panel'
     import libPannel from './unit/lib'
+    import collectPannel from './unit/collect'
     import historyPannel from './history'
     export default {
         components: {
             comPannel,
             historyPannel,
+            collectPannel,
             libPannel
         },
         props: {
@@ -47,6 +53,9 @@
         },
         methods: {
             ...mapMutations(["addStack"]),
+            showIt(){
+                this.$refs.lib.showIt();
+            },
             addItem(data) {
                 switch (data.type) {
                     case 0: this.addText(data); break;

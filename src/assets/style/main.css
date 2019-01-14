@@ -24,3 +24,58 @@ ul{
     border-bottom: 1px solid #ddd;
     border-right: 1px solid #ddd;
 }
+
+.marsk_Diaolog{
+    position: fixed;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000000cc;
+        z-index: 11;
+    }
+
+    .marsk_Diaolog .tabs_f{
+        width: 40%;
+    }
+    .marsk_Diaolog .tabs_f .el-tabs__item{
+        color: #fff;
+    }
+    .marsk_Diaolog .el-tabs__item.is-active{
+        color: #409EFF;
+    }
+
+    .marsk_Diaolog .el-tabs__content{
+        border: 0;
+    }
+
+    .marsk_Diaolog .img-inner-box{
+        position: relative;
+    }
+
+    .marsk_Diaolog .img-inner-box:hover .player_info{
+        display: flex;
+    }
+
+    .player_info{
+        background: rgba(0, 0, 0, 0.6313725490196078);
+        display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    position: absolute;
+    display: none;
+    width: 100%;
+    bottom:0;
+    left:0;
+    padding: 4px 0px;
+    
+    }
+
+    .vue-waterfall-easy-container > .loading.ball-beat > .dot{
+        background-color: #4c78c7 !important;
+    }
+
+    .marsk_Diaolog .loading.first-loading {
+        top: 50%;
+        margin-top: -15px;
+      }
