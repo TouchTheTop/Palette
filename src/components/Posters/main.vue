@@ -9,7 +9,7 @@
           <ul>
             <li v-for="(item,i) in Stacks" @click="chose(i)" :class="nowIndex===i?'active':''" v-show="!item.hide"
               :title="item.data.title">
-              <div class="ctl" :class="item.data.type?'ctl-text':''" :ref="'box'+nowTab" :style="{transform:'rotate('+site.rotate+'deg)'}">
+              <div class="ctl" :class="item.data.type?'ctl-text':''" :ref="'box'+nowTab" :style="{transform:'rotate('+site.rotate+'deg)',zIndex:9999-i}">
                 <img :src="item.data.text" alt="" v-if="!item.data.type">
                 <textarea class="spec" type="text" v-model="item.data.text" v-if="item.data.type"></textarea>
                 <div class="dragTemplate" style="position: absolute;left: 0;top: 0;right: 0;bottom: 0;background-color: #fff;opacity: 0;"></div>
@@ -32,7 +32,6 @@
         </div>
       </el-tab-pane>
     </el-tabs>
-
     <history-pannel ref="Stack" :data="Stacks" :nowTab="nowTab"></history-pannel>
 
     <size-dialog ref="sizeDialog" @setInfo="setInfo"></size-dialog>

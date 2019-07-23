@@ -15,10 +15,10 @@
             <vueWaterfallEasy style="width: 100%;height: 85%;" :imgsArr="libs" @scrollReachBottom="fetchImgsData">
                 <template slot-scope="props">
                     <div class="player_info">
-                        <a href="#" @click="closeIt">
+                        <a href="javascript:void(0)" @click="useIt(props.value)">
                             <icon name="paste" width="25px" height="25px"></icon>
                         </a>
-                        <a href="#" @click="closeIt">
+                        <a href="javascript:void(0)" @click="closeIt">
                             <icon name="collect_i" width="25px" height="25px"></icon>
                         </a>
                         <a href="javascript:void(0)" download="props.value.desc" @click="downloadIt(props.value.src)">
@@ -85,6 +85,13 @@
                 }, function (err, data) {
                     console.log(err || data.Body);
                 });
+            },
+            useIt(data){
+                this.$emit("addItem", {
+                            type: 0,
+                            text: data.src
+                })
+                this.show = false;
             },
             async getCat() {
                 let res = await this.$ASK(this.$API.Posters.getCat, null, 'get')

@@ -6,7 +6,7 @@
         <collect-pannel @addItem="addItem"></collect-pannel>
         <h3>素材库</h3>
         <el-button @click="showIt">打开</el-button>
-        <lib-pannel ref="lib"></lib-pannel>
+        <lib-pannel ref="lib" @addItem="addItem"></lib-pannel>
 
 
     </div>
@@ -17,11 +17,9 @@
     import comPannel from './panel'
     import libPannel from './unit/lib'
     import collectPannel from './unit/collect'
-    import historyPannel from './history'
     export default {
         components: {
             comPannel,
-            historyPannel,
             collectPannel,
             libPannel
         },
